@@ -7,19 +7,13 @@ php:
   - 7.0
   - 7.1
   - 7.2
-  - nightly
 
 cache:
   directories:
     - $HOME/.composer/cache
 
-env:
-  matrix:
-    - PREFER_LOWEST="--prefer-lowest"
-    - PREFER_LOWEST=""
-
 before_script:
-  - composer install $PREFER_LOWEST --prefer-dist --prefer-stable --no-interaction --no-ansi --no-progress --optimize-autoloader --dev --no-suggest
+  - composer install --prefer-dist --prefer-stable --no-interaction --no-ansi --no-progress --optimize-autoloader --dev --no-suggest
 
 script:
   - ./vendor/bin/phpcs
