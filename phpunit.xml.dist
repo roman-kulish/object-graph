@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
+        backupGlobals="false"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        bootstrap="vendor/autoload.php"
+>
+    <testsuites>
+        <testsuite name="Object Graph Test Suite">
+            <directory>tests/ObjectGraph/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/ObjectGraph/</directory>
+        </whitelist>
+    </filter>
+
+    <php>
+        <ini name="error_reporting" value="-1" />
+        <ini name="date.timezone" value="UTC"/>
+    </php>
+</phpunit>
