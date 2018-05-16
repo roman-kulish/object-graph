@@ -60,8 +60,6 @@ class Context implements ArrayAccess
     public function offsetGet($offset)
     {
         return ($this->offsetExists($offset) ? $this->data[$offset] : null);
-
-
     }
 
     /**
