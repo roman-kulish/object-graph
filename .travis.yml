@@ -13,8 +13,8 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
-  - composer install --prefer-dist --prefer-stable --no-interaction --no-ansi --no-progress --optimize-autoloader --dev --no-suggest
+  - composer install --prefer-dist --no-interaction --no-ansi --no-progress --optimize-autoloader --dev --no-suggest
 
 script:
-  - ./vendor/bin/phpcs
-  - ./vendor/bin/phpunit
+  - composer phpcs
+  - composer phpunit
