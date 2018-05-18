@@ -1,7 +1,7 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
+/**
+ * This file is part of the Object Graph package.
  *
  * (c) Roman Kulish <roman.kulish@gmail.com>
  *
@@ -71,7 +71,7 @@ class ContextTest extends TestCase
     }
 
     /**
-     * @expectedException \ObjectGraph\Exception\EmptyPropertyNameException
+     * @expectedException \ObjectGraph\Exception\EmptyNameException
      */
     public function testEmptyPropertyException()
     {

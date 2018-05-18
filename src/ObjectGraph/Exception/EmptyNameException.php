@@ -12,11 +12,11 @@
 namespace ObjectGraph\Exception;
 
 /**
- * Class EmptyPropertyNameException
+ * Class EmptyNameException
  *
  * @package ObjectGraph\Exception
  */
-class EmptyPropertyNameException extends ObjectGraphException
+class EmptyNameException extends ObjectGraphException
 {
 
 }

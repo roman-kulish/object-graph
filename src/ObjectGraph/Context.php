@@ -1,7 +1,7 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
+/**
+ * This file is part of the Object Graph package.
  *
  * (c) Roman Kulish <roman.kulish@gmail.com>
  *
@@ -12,10 +12,21 @@
 namespace ObjectGraph;
 
 use ArrayAccess;
-use ObjectGraph\Exception\EmptyPropertyNameException;
+use ObjectGraph\Exception\EmptyNameException;
 
 /**
- * Class Context
+ * Class Context is used to pass variables to the field resolvers.
+ *
+ * Root object will receive a copy of the global context and its nested objects
+ * will receive a copy of the parent's Context.
+ *
+ * Context can be used to pass variables to the nested object field resolvers.
+ *
+ * Note that a copy of the Context is created using cloning. Context should be used
+ * to store scalar variables and it does not support deep cloning.
+ *
+ * If there is an object stored in the Context, then cloned Context will retain the reference
+ * to the original object.
  *
  * @package ObjectGraph
  */
@@ -39,7 +50,7 @@ class Context implements ArrayAccess
      *
      * @link  http://php.net/manual/en/arrayaccess.offsetexists.php
      *
-     * @param mixed $offset An offset to check for
+     * @param string $offset An offset to check for
      *
      * @return boolean
      */
@@ -53,7 +64,7 @@ class Context implements ArrayAccess
      *
      * @link  http://php.net/manual/en/arrayaccess.offsetget.php
      *
-     * @param mixed $offset The offset to retrieve
+     * @param string $offset The offset to retrieve
      *
      * @return mixed
      */
@@ -67,13 +78,19 @@ class Context implements ArrayAccess
      *
      * @link  http://php.net/manual/en/arrayaccess.offsetset.php
      *
-     * @param mixed $offset The offset to assign the value to
+     * @param string $offset The offset to assign the value to
      * @param mixed $value  The value to set
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset)) {
-            throw new EmptyPropertyNameException('Property must have a name');
+
+        /**
+         * Storing a value inside the Context like $context[] = 'dummy' is OK,
+         * but is confusing and the variable name is not obvious.
+         */
+
+        if (empty($offset)) {
+            throw new EmptyNameException('Context variable name must not be empty');
         }
 
         $this->data[$offset] = $value;
@@ -84,7 +101,7 @@ class Context implements ArrayAccess
      *
      * @link  http://php.net/manual/en/arrayaccess.offsetunset.php
      *
-     * @param mixed $offset The offset to unset
+     * @param string $offset The offset to unset
      */
     public function offsetUnset($offset)
     {
