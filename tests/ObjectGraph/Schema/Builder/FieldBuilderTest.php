@@ -135,7 +135,6 @@ class FieldBuilderTest extends TestCase
 
         $this->fieldBuilder->asScalarValue($expectedType);
         $this->assertEquals($expectedType, $definition->getType());
-
     }
 
     /**
