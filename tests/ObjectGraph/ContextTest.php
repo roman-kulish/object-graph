@@ -71,7 +71,7 @@ class ContextTest extends TestCase
     }
 
     /**
-     * @expectedException \ObjectGraph\Exception\EmptyNameException
+     * @expectedException \ObjectGraph\Exception\InvalidArgumentException
      */
     public function testEmptyPropertyException()
     {

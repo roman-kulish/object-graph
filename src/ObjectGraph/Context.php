@@ -3,7 +3,7 @@
 /**
  * This file is part of the Object Graph package.
  *
- * (c) Roman Kulish <roman.kulish@gmail.com>
+ * Copyright (c) 2018 Roman Kulish <roman.kulish@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,7 @@
 namespace ObjectGraph;
 
 use ArrayAccess;
-use ObjectGraph\Exception\EmptyNameException;
+use ObjectGraph\Exception\InvalidArgumentException;
 
 /**
  * Class Context is used to pass variables to the field resolvers.
@@ -90,7 +90,7 @@ class Context implements ArrayAccess
          */
 
         if (empty($offset)) {
-            throw new EmptyNameException('Context variable name must not be empty');
+            throw new InvalidArgumentException('Context variable name must not be empty');
         }
 
         $this->data[$offset] = $value;
