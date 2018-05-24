@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the Symfony package.
+ * This file is part of the Object Graph package.
  *
  * Copyright (c) 2018 Roman Kulish <roman.kulish@gmail.com>
  *
@@ -11,14 +11,14 @@
 
 namespace ObjectGraph\Exception;
 
-use RuntimeException;
+use InvalidArgumentException as BaseInvalidArgumentException;
 
 /**
- * Class ObjectGraphException
+ * Class InvalidArgumentException
  *
  * @package ObjectGraph\Exception
  */
-class ObjectGraphException extends RuntimeException implements ObjectGraphExceptionInterface
+class InvalidArgumentException extends BaseInvalidArgumentException implements ObjectGraphExceptionInterface
 {
 
 }
