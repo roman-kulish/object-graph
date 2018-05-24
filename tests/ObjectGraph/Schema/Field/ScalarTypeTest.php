@@ -79,4 +79,12 @@ class ScalarTypeTest extends TestCase
         $value = $scalarType->cast($now->format(DateTime::RFC3339), ScalarType::TIMESTAMP);
         $this->assertSame($now->getTimestamp(), $value);
     }
+
+    /**
+     * @expectedException \ObjectGraph\Exception\InvalidArgumentException
+     */
+    public function testInvalidTypeArgumentException()
+    {
+        $this->scalarType->cast(null, 'dummy');
+    }
 }

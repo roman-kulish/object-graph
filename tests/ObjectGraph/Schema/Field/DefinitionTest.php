@@ -11,15 +11,21 @@
 
 namespace ObjectGraph\Schema\Field;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * Interface Kind
+ * Class DefinitionTest
  *
  * @package ObjectGraph\Schema\Field
  */
-interface Kind
+class DefinitionTest extends TestCase
 {
-    const SCALAR = 'scalar';
-    const GRAPH_NODE = 'graph_node';
-    const ARRAY = 'array';
-    const RAW = 'raw';
+    /**
+     * @expectedException \ObjectGraph\Exception\InvalidArgumentException
+     */
+    public function testInvalidKindArgumentException()
+    {
+        $definition = new Definition();
+        $definition->setKind(999);
+    }
 }

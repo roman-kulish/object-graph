@@ -68,8 +68,14 @@ class ScalarType
             case self::TIMESTAMP:
                 return $this->asDateTime($value, (self::TIMESTAMP === $type));
 
-            default:
+            case null:
                 return $value;
+
+            default:
+                throw new InvalidArgumentException(sprintf(
+                    'Invalid argument $type, must be one of the %s constants',
+                    ScalarType::class
+                ));
         }
     }
 
