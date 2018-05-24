@@ -77,7 +77,8 @@ class FieldBuilderTest extends TestCase
     public function testResolver()
     {
         $definition       = $this->fieldBuilder->getDefinition();
-        $expectedResolver = Closure::fromCallable('strtoupper');
+        $expectedResolver = function () {
+        };
 
         $this->fieldBuilder->withResolver($expectedResolver);
         $this->assertInstanceOf(Closure::class, $definition->getResolver());
