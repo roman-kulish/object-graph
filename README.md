@@ -1,4 +1,4 @@
-# Object Graph 
+# Object Graph (Work In Progress! Not Ready Yet!)
 
 [![Build Status](https://travis-ci.org/roman-kulish/object-graph.svg?branch=master)](https://travis-ci.org/roman-kulish/object-graph)
 
