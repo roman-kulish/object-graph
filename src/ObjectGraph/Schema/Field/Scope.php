@@ -32,7 +32,7 @@ class Scope
     /**
      * @var ObjectGraph
      */
-    protected $resolver;
+    private $resolver;
 
     /**
      * @param ObjectGraph $resolver
