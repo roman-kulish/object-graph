@@ -12,6 +12,7 @@
 namespace ObjectGraph\Schema\Builder;
 
 use Closure;
+use ObjectGraph\ObjectGraph;
 use ObjectGraph\Schema;
 use ObjectGraph\Schema\Field\Definition;
 use ObjectGraph\Schema\Field\Kind;
@@ -38,7 +39,7 @@ class FieldBuilderTest extends TestCase
      */
     protected function setUp()
     {
-        $this->fieldBuilder = new FieldBuilder(new Scope());
+        $this->fieldBuilder = new FieldBuilder(new Scope(new ObjectGraph()));
 
         parent::setUp();
     }

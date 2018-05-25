@@ -11,6 +11,7 @@
 
 namespace ObjectGraph\Schema\Builder;
 
+use ObjectGraph\ObjectGraph;
 use ObjectGraph\Schema\Field\Definition;
 use ObjectGraph\Schema\Field\Scope;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,7 @@ class SchemaBuilderTest extends TestCase
     public function testSchemaBuilder()
     {
         $expectedFieldName = 'test';
-        $schemaBuilder     = new SchemaBuilder(new Scope());
+        $schemaBuilder     = new SchemaBuilder(new Scope(new ObjectGraph()));
         $schemaBuilder->addField($expectedFieldName);
         $schema = $schemaBuilder->getFields();
 

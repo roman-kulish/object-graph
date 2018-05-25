@@ -11,6 +11,9 @@
 
 namespace ObjectGraph\Schema\Field;
 
+use Flow\JSONPath\JSONPath;
+use Flow\JSONPath\JSONPathException;
+use ObjectGraph\Exception\ObjectGraphException;
 use ObjectGraph\ObjectGraph;
 use stdClass;
 use Traversable;
@@ -27,6 +30,21 @@ use Traversable;
 class Scope
 {
     /**
+     * @var ObjectGraph
+     */
+    protected $resolver;
+
+    /**
+     * @param ObjectGraph $resolver
+     */
+    public function __construct(ObjectGraph $resolver)
+    {
+        $this->resolver = $resolver;
+    }
+
+    /**
+     * Evaluate JSONPath expression on the given $data and return result
+     *
      * @see https://github.com/FlowCommunications/JSONPath
      *
      * @param stdClass $data
@@ -36,11 +54,22 @@ class Scope
      */
     public function query(stdClass $data, string $expression): Traversable
     {
-        // TODO
+        try {
+            return (new JSONPath($data))->find($expression);
+        } catch (JSONPathException $exception) {
+            throw new ObjectGraphException(
+                sprintf('Cannot evaluate JSONPath expression "%s", error: %s', $expression, $exception->getMessage()),
+                0,
+                $exception
+            );
+        }
     }
 
+    /**
+     * @return ObjectGraph
+     */
     public function getRootResolver(): ObjectGraph
     {
-        // TODO
+        return $this->resolver;
     }
 }
