@@ -26,7 +26,7 @@ class SchemaBuilderTest extends TestCase
         $expectedFieldName = 'test';
         $schemaBuilder     = new SchemaBuilder();
         $schemaBuilder->addField($expectedFieldName);
-        $schema = $schemaBuilder->getSchema();
+        $schema = $schemaBuilder->getFields();
 
         $this->assertTrue(is_array($schema));
         $this->assertArrayHasKey($expectedFieldName, $schema);

@@ -23,7 +23,7 @@ class SchemaBuilder
     /**
      * @var Definition[]
      */
-    protected $schema = [];
+    protected $fields = [];
 
     /**
      * @var FieldBuilder
@@ -45,7 +45,7 @@ class SchemaBuilder
     public function addField(string $name)
     {
         $fieldBuilder        = clone $this->fieldBuilder;
-        $this->schema[$name] = $fieldBuilder->getDefinition();
+        $this->fields[$name] = $fieldBuilder->getDefinition();
 
         return $fieldBuilder;
     }
@@ -54,8 +54,8 @@ class SchemaBuilder
      * @return Definition[]
      * @internal
      */
-    public function getSchema(): array
+    public function getFields(): array
     {
-        return $this->schema;
+        return $this->fields;
     }
 }

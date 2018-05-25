@@ -12,7 +12,7 @@
 namespace ObjectGraph\Schema\Builder;
 
 use Closure;
-use ObjectGraph\GraphNode;
+use ObjectGraph\Schema;
 use ObjectGraph\Schema\Field\Definition;
 use ObjectGraph\Schema\Field\Kind;
 use ObjectGraph\Schema\Field\ScalarType;
@@ -98,7 +98,7 @@ class FieldBuilderTest extends TestCase
 
         $this->fieldBuilder->asGraphNode();
         $this->assertEquals(Kind::GRAPH_NODE, $definition->getKind());
-        $this->assertEquals(GraphNode::class, $definition->getType());
+        $this->assertEquals(Schema::class, $definition->getType());
 
         $this->fieldBuilder->asGraphNode($expectedClassName);
         $this->assertEquals($expectedClassName, $definition->getType());
@@ -115,7 +115,7 @@ class FieldBuilderTest extends TestCase
 
         $this->fieldBuilder->asGraphNodeArray();
         $this->assertEquals(Kind::ARRAY, $definition->getKind());
-        $this->assertEquals(GraphNode::class, $definition->getType());
+        $this->assertEquals(Schema::class, $definition->getType());
 
         $this->fieldBuilder->asGraphNodeArray($expectedClassName);
         $this->assertEquals($expectedClassName, $definition->getType());

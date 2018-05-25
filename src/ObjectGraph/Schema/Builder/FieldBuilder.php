@@ -12,7 +12,7 @@
 namespace ObjectGraph\Schema\Builder;
 
 use Closure;
-use ObjectGraph\GraphNode;
+use ObjectGraph\Schema;
 use ObjectGraph\Schema\Field\Definition;
 use ObjectGraph\Schema\Field\Kind;
 
@@ -89,15 +89,15 @@ class FieldBuilder
     /**
      * Cast the value returned from the resolver to the Graph Node of the $className
      *
-     * @param string $className
+     * @param string $schemaClassName
      *
      * @return FieldBuilder
      */
-    public function asGraphNode(string $className = GraphNode::class): self
+    public function asGraphNode(string $schemaClassName = Schema::class): self
     {
         $this->definition
             ->setKind(Kind::GRAPH_NODE)
-            ->setType($className);
+            ->setType($schemaClassName);
 
         return $this;
     }
@@ -137,15 +137,15 @@ class FieldBuilder
     /**
      * Cast each array value returned from the resolver to the Graph Node of the $className
      *
-     * @param string $className
+     * @param string $schemaClassName
      *
      * @return FieldBuilder
      */
-    public function asGraphNodeArray(string $className = GraphNode::class): self
+    public function asGraphNodeArray(string $schemaClassName = Schema::class): self
     {
         $this->definition
             ->setKind(Kind::ARRAY)
-            ->setType($className);
+            ->setType($schemaClassName);
 
         return $this;
     }
