@@ -16,6 +16,7 @@ use ObjectGraph\Schema;
 use ObjectGraph\Schema\Field\Definition;
 use ObjectGraph\Schema\Field\Kind;
 use ObjectGraph\Schema\Field\ScalarType;
+use ObjectGraph\Schema\Field\Scope;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -37,7 +38,7 @@ class FieldBuilderTest extends TestCase
      */
     protected function setUp()
     {
-        $this->fieldBuilder = new FieldBuilder();
+        $this->fieldBuilder = new FieldBuilder(new Scope());
 
         parent::setUp();
     }

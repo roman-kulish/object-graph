@@ -15,6 +15,7 @@ use Closure;
 use ObjectGraph\Schema;
 use ObjectGraph\Schema\Field\Definition;
 use ObjectGraph\Schema\Field\Kind;
+use ObjectGraph\Schema\Field\Scope;
 
 /**
  * Class FieldBuilder
@@ -28,9 +29,18 @@ class FieldBuilder
      */
     protected $definition;
 
-    public function __construct()
+    /**
+     * @var Scope
+     */
+    protected $scope;
+
+    /**
+     * @param Scope $scope
+     */
+    public function __construct(Scope $scope)
     {
         $this->definition = new Definition();
+        $this->scope      = $scope;
     }
 
     /**
@@ -81,6 +91,10 @@ class FieldBuilder
      */
     public function withResolver(Closure $resolver = null): self
     {
+        if ($resolver instanceof Closure) {
+            $resolver = $resolver->bindTo($this->scope);
+        }
+
         $this->definition->setResolver($resolver);
 
         return $this;

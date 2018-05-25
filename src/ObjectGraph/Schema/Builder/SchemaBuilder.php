@@ -12,6 +12,7 @@
 namespace ObjectGraph\Schema\Builder;
 
 use ObjectGraph\Schema\Field\Definition;
+use ObjectGraph\Schema\Field\Scope;
 
 /**
  * Class SchemaBuilder
@@ -30,9 +31,12 @@ class SchemaBuilder
      */
     protected $fieldBuilder;
 
-    public function __construct()
+    /**
+     * @param Scope $scope Schema scope
+     */
+    public function __construct(Scope $scope)
     {
-        $this->fieldBuilder = new FieldBuilder();
+        $this->fieldBuilder = new FieldBuilder($scope);
     }
 
     /**
