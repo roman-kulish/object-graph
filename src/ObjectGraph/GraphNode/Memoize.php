@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ObjectGraph;
+namespace ObjectGraph\GraphNode;
 
 /**
  * Class Memoize stores resolved values of GraphNode fields
  *
- * @package ObjectGraph
+ * @package ObjectGraph\GraphNode
  */
 class Memoize
 {

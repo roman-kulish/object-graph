@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ObjectGraph;
+namespace ObjectGraph\GraphNode;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class MemoizeTest
  *
- * @package ObjectGraph
+ * @package ObjectGraph\GraphNode
  */
 class MemoizeTest extends TestCase
 {
