@@ -89,6 +89,20 @@ class FieldBuilderTest extends TestCase
         $this->assertNull($definition->getResolver());
     }
 
+    public function testResolverScope()
+    {
+        $test          = $this;
+        $schemaBuilder = new SchemaBuilder(new Scope(new ObjectGraph()));
+
+        $schemaBuilder->addField('test')->withResolver(function () use ($test) {
+            $test->assertInstanceOf(Scope::class, $this);
+        });
+
+        $schema = $schemaBuilder->getFields();
+
+        call_user_func($schema['test']->getResolver());
+    }
+
     /**
      * @covers \ObjectGraph\Schema\Field\Definition::setKind()
      * @covers \ObjectGraph\Schema\Field\Definition::setType()
