@@ -12,7 +12,7 @@
 namespace ObjectGraph;
 
 use ArrayAccess;
-use JsonSerializable;
+use ObjectGraph\Exception\ImmutableObjectException;
 use ObjectGraph\GraphNode\Memoize;
 use stdClass;
 
@@ -21,7 +21,7 @@ use stdClass;
  *
  * @package ObjectGraph
  */
-class GraphNode implements ArrayAccess, JsonSerializable
+class GraphNode implements ArrayAccess
 {
     /**
      * @var stdClass
@@ -83,7 +83,7 @@ class GraphNode implements ArrayAccess, JsonSerializable
      */
     public function __set($name, $value)
     {
-        // TODO: Implement __set() method.
+        throw new ImmutableObjectException('Attempt to set a new property on immutable object');
     }
 
     /**
@@ -109,7 +109,7 @@ class GraphNode implements ArrayAccess, JsonSerializable
      */
     public function __unset($name)
     {
-        // TODO: Implement __unset() method.
+        throw new ImmutableObjectException('Attempt to unset a property on immutable object');
     }
 
     /**
@@ -122,7 +122,7 @@ class GraphNode implements ArrayAccess, JsonSerializable
      */
     public function __debugInfo()
     {
-        return (array)$this->getData();
+        return $this->asArray();
     }
 
     /**
@@ -136,7 +136,7 @@ class GraphNode implements ArrayAccess, JsonSerializable
      */
     public function offsetExists($offset)
     {
-        // TODO: Implement offsetExists() method.
+        return isset($this->$offset);
     }
 
     /**
@@ -150,7 +150,7 @@ class GraphNode implements ArrayAccess, JsonSerializable
      */
     public function offsetGet($offset)
     {
-        // TODO: Implement offsetGet() method.
+        return $this->$offset;
     }
 
     /**
@@ -163,7 +163,7 @@ class GraphNode implements ArrayAccess, JsonSerializable
      */
     public function offsetSet($offset, $value)
     {
-        // TODO: Implement offsetSet() method.
+        throw new ImmutableObjectException('Attempt to set a new property on immutable object');
     }
 
     /**
@@ -175,18 +175,6 @@ class GraphNode implements ArrayAccess, JsonSerializable
      */
     public function offsetUnset($offset)
     {
-        // TODO: Implement offsetUnset() method.
-    }
-
-    /**
-     * Specify data which should be serialized to JSON
-     *
-     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     *
-     * @return mixed
-     */
-    public function jsonSerialize()
-    {
-        return $this->getData();
+        throw new ImmutableObjectException('Attempt to unset a property on immutable object');
     }
 }
