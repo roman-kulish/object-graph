@@ -14,6 +14,7 @@ namespace ObjectGraph;
 use ArrayAccess;
 use ObjectGraph\Exception\ImmutableObjectException;
 use ObjectGraph\GraphNode\Memoize;
+use ObjectGraph\GraphNode\Transformer;
 use stdClass;
 
 /**
@@ -50,13 +51,53 @@ class GraphNode implements ArrayAccess
     }
 
     /**
-     * Return this GraphNode underlying data
+     * Return this GraphNode underlying source data
      *
      * @return stdClass
      */
     public function getData(): stdClass
     {
         return $this->data;
+    }
+
+    /**
+     * Return GraphNode representation as an object
+     *
+     * @return stdClass
+     */
+    public function asObject(): stdClass
+    {
+        return (new Transformer($this, $this->getFields()))->asObject();
+    }
+
+    /**
+     * Return GraphNode representation as an array
+     *
+     * @return array
+     */
+    public function asArray(): array
+    {
+        return (new Transformer($this, $this->getFields()))->asArray();
+    }
+
+    /**
+     * Get a list of fields
+     *
+     * For a strict schema, only a list of defined fields is returned. Otherwise, the result is a
+     * combination of schema and source object fields
+     *
+     * @return array
+     */
+    private function getFields(): array
+    {
+        $fields = $this->schema->getFields();
+
+        if (! $this->schema->isStrict()) {
+            $objectVars = get_object_vars($this->getData());
+            $fields     = array_merge(array_keys($objectVars), $fields);
+        }
+
+        return $fields;
     }
 
     /**
@@ -70,7 +111,12 @@ class GraphNode implements ArrayAccess
      */
     public function __get($name)
     {
-        // TODO: Implement __get() method.
+        $data   = $this->data;
+        $schema = $this->schema;
+
+        return $this->memo->memoize($name, function () use ($data, $schema, $name) {
+            return $schema->resolve($name, $data);
+        });
     }
 
     /**
@@ -97,7 +143,7 @@ class GraphNode implements ArrayAccess
      */
     public function __isset($name)
     {
-        // TODO: Implement __isset() method.
+        return isset($this->$name);
     }
 
     /**

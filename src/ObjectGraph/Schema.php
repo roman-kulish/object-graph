@@ -11,8 +11,10 @@
 
 namespace ObjectGraph;
 
+use Closure;
 use ObjectGraph\Schema\Builder\SchemaBuilder;
 use ObjectGraph\Schema\Field\Definition;
+use ObjectGraph\Schema\Field\Kind;
 use ObjectGraph\Schema\Field\Scope;
 use stdClass;
 
@@ -91,6 +93,21 @@ class Schema
     }
 
     /**
+     * Whether this schema is strict or not
+     *
+     * This changes behaviour when iterating or serializing GraphNode instance. If schema is strict,
+     * then only fields defined on schema will be iterated over or serialized.
+     *
+     * Otherwise, object fields which are not defined on the schema will be used as well.
+     *
+     * @return bool
+     */
+    public function isStrict(): bool
+    {
+        return false;
+    }
+
+    /**
      * Get a list of defined schema fields
      *
      * @return array
@@ -110,7 +127,51 @@ class Schema
      */
     public function resolve(string $field, stdClass $data)
     {
-        // TODO
+        if (isset($this->fields[$field])) {
+            $definition = $this->fields[$field];
+            $resolver   = $definition->getResolver();
+            $default    = $definition->getDefault();
+            $kind       = $definition->getKind();
+            $type       = $definition->getType();
+        } else {
+            $resolver = null;
+            $default  = null;
+            $kind     = Kind::RAW;
+            $type     = null;
+        }
+
+        $context = clone $this->context;
+
+        switch (true) {
+            case ($resolver instanceof Closure):
+                $value = call_user_func($resolver, $data, $context);
+                break;
+
+            case isset($data->$field):
+                $value = $data->$field;
+                break;
+
+            default:
+                $value = null;
+        }
+
+        if (empty($value)) {
+            $value = $default;
+        }
+
+        switch ($kind ?: $this->resolver->kindOf($value)) {
+            case Kind::SCALAR:
+                return $this->resolver->resolveScalar($value, $type);
+
+            case Kind::GRAPH_NODE:
+                return $this->resolver->resolveObject($value, $type, $context);
+
+            case Kind::ARRAY:
+                return $this->resolver->resolveArray($value, null, $type, $context);
+
+            default:
+                return $data;
+        }
     }
 
     /**

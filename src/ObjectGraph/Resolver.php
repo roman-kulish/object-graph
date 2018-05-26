@@ -11,6 +11,7 @@
 
 namespace ObjectGraph;
 
+use ObjectGraph\Exception\ObjectGraphException;
 use ObjectGraph\Schema\Field\Kind;
 use ObjectGraph\Schema\Field\ScalarType;
 use stdClass;
@@ -63,7 +64,7 @@ class Resolver
     }
 
     /**
-     * TODO
+     * Represent given $data as an instance of GraphNode
      *
      * This method is a default resolver and an entry point, where you can inspect $data, determine its type and
      * if it is an object then attempt to determine the correct Schema to use and finally pass it further
@@ -86,16 +87,31 @@ class Resolver
             return null;
         }
 
-        // TODO
+        if (! empty($schemaClassName)) {
+            $this->assertSameClassOrSubclassOf($schemaClassName, Schema::class);
+        } else {
+            $schemaClassName = Schema::class;
+        }
+
+        if (! isset($this->schemaCache)) {
+            $this->schemaCache[$schemaClassName] = new $schemaClassName($this);
+        }
+
+        $schema             = $this->schemaCache[$schemaClassName]->withContext(($context ?: $this->context));
+        $graphNodeClassName = $schema->getGraphNodeClassName();
+
+        $this->assertSameClassOrSubclassOf($graphNodeClassName, GraphNode::class);
+
+        return new $graphNodeClassName($data, $schema);
     }
 
     /**
-     * TODO
+     * Return an array with each element represented according to the provided $kind and $type
      *
      * Note: this method can be called recursively by the Schema
      *
      * @param array|null   $data
-     * @param string       $kind
+     * @param string|null  $kind
      * @param string|null  $type
      * @param Context|null $context
      *
@@ -111,7 +127,24 @@ class Resolver
             return [];
         }
 
-        // TODO
+        $resolver = $this;
+        $context  = ($context ?: $this->context);
+
+        return array_map(function ($data) use ($resolver, $kind, $type, $context) {
+            switch ($kind ?: $resolver->kindOf($data)) {
+                case Kind::SCALAR:
+                    return $resolver->resolveScalar($data, $type);
+
+                case Kind::GRAPH_NODE:
+                    return $resolver->resolveObject($data, $type, $context);
+
+                case Kind::ARRAY:
+                    return $resolver->resolveArray($data, null, $type, $context);
+
+                default:
+                    return $data;
+            }
+        }, $data);
     }
 
     /**
@@ -140,7 +173,24 @@ class Resolver
                 return Kind::ARRAY;
 
             default:
-                return Kind::RAW; // no idea what are you ...
+                return Kind::RAW; // no idea what kind you are ...
         }
+    }
+
+    /**
+     * @param string $className
+     * @param string $baseClassName
+     *
+     * @return bool
+     */
+    protected function assertSameClassOrSubclassOf(string $className, string $baseClassName): bool
+    {
+        if (! class_exists($className)) {
+            throw new ObjectGraphException('Class %s does not exist', $className);
+        } elseif (! is_a($className, $baseClassName, true)) {
+            throw new ObjectGraphException('Class %s must extend %s', $className, $baseClassName);
+        }
+
+        return true;
     }
 }
