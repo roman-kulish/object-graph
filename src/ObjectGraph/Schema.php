@@ -11,6 +11,11 @@
 
 namespace ObjectGraph;
 
+use ObjectGraph\Schema\Builder\SchemaBuilder;
+use ObjectGraph\Schema\Field\Definition;
+use ObjectGraph\Schema\Field\Scope;
+use stdClass;
+
 /**
  * Class Schema
  *
@@ -18,5 +23,141 @@ namespace ObjectGraph;
  */
 class Schema
 {
+    /**
+     * @var ObjectGraph
+     */
+    protected $resolver;
 
+    /**
+     * @var Context
+     */
+    protected $context;
+
+    /**
+     * @var Definition[]
+     */
+    protected $fields = [];
+
+    /**
+     * @param ObjectGraph $resolver
+     */
+    final public function __construct(ObjectGraph $resolver)
+    {
+        $this->resolver = $resolver;
+
+        $this->init();
+    }
+
+    /**
+     * Internal method called from {@see Schema::__construct} and {@see Schema::__wakeup()} and
+     * used to prepare internals and initialize schema by passing the call to {@see Schema::build()}
+     */
+    private function init()
+    {
+        $scope         = new Scope($this->resolver);
+        $schemaBuilder = new SchemaBuilder($scope);
+
+        $this->build($schemaBuilder);
+
+        $this->fields = $schemaBuilder->getFields();
+    }
+
+    /**
+     * Factory method which returns a new instance of the Schema with shared ObjectGraph $resolver and
+     * provided $context
+     *
+     * @param Context $context
+     *
+     * @return Schema
+     */
+    public function withContext(Context $context): self
+    {
+        $schema          = clone $this;
+        $schema->context = $context;
+
+        return $schema;
+    }
+
+    /**
+     * Get GraphNode class name to instantiate
+     *
+     * Override this method to change the class name
+     *
+     * @return string
+     */
+    public function getGraphNodeClassName(): string
+    {
+        return GraphNode::class;
+    }
+
+    /**
+     * Get a list of defined schema fields
+     *
+     * @return array
+     */
+    public function getFields(): array
+    {
+        return array_keys($this->fields);
+    }
+
+    /**
+     * Resolve return the $field value
+     *
+     * @param string   $field
+     * @param stdClass $data
+     *
+     * @return mixed
+     */
+    public function resolve(string $field, stdClass $data)
+    {
+        // TODO
+    }
+
+    /**
+     * Initialise schema
+     *
+     * This is a sub-constructor, which is invoked by the {@see Schema::__construct()} and
+     * it should contain all the schema initialization logic
+     *
+     * @param SchemaBuilder $schema
+     */
+    protected function build(SchemaBuilder $schema)
+    {
+        // define your fields here ...
+    }
+
+    /**
+     * serialize() checks if your class has a function with the magic name __sleep.
+     * If so, that function is executed prior to any serialization.
+     * It can clean up the object and is supposed to return an array with the names of all variables of that object
+     * that should be serialized.
+     *
+     * If the method doesn't return anything then NULL is serialized and E_NOTICE is issued.
+     * The intended use of __sleep is to commit pending data or perform similar cleanup tasks.
+     * Also, the function is useful if you have very large objects which do not need to be saved completely.
+     *
+     * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.sleep
+     *
+     * @return string[]
+     */
+    public function __sleep()
+    {
+        return [
+            'resolver',
+            'context',
+        ];
+    }
+
+    /**
+     * unserialize() checks for the presence of a function with the magic name __wakeup.
+     * If present, this function can reconstruct any resources that the object may have.
+     * The intended use of __wakeup is to reestablish any database connections that may have been lost during
+     * serialization and perform other reinitialization tasks.
+     *
+     * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.sleep
+     */
+    public function __wakeup()
+    {
+        $this->init();
+    }
 }
