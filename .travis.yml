@@ -16,5 +16,11 @@ before_script:
   - composer install --prefer-dist --no-interaction --no-ansi --no-progress --optimize-autoloader --dev --no-suggest
 
 script:
-  - composer phpcs
+  - ./vendor/bin/phpunit --coverage-clover=coverage.xml
   - composer test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email: false

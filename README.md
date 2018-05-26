@@ -1,6 +1,8 @@
 # Object Graph (Work In Progress! Not Ready Yet!)
 
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg)](https://php.net/)
 [![Build Status](https://travis-ci.org/roman-kulish/object-graph.svg?branch=master)](https://travis-ci.org/roman-kulish/object-graph)
+[![Code Coverage](https://img.shields.io/codecov/c/github/roman-kulish/object-graph.svg)](https://codecov.io/gh/roman-kulish/object-graph)
 
 ## Table of Contents
 
