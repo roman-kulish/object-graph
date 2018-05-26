@@ -24,7 +24,7 @@ use stdClass;
 class Schema
 {
     /**
-     * @var ObjectGraph
+     * @var Resolver
      */
     protected $resolver;
 
@@ -39,9 +39,9 @@ class Schema
     protected $fields = [];
 
     /**
-     * @param ObjectGraph $resolver
+     * @param Resolver $resolver
      */
-    final public function __construct(ObjectGraph $resolver)
+    final public function __construct(Resolver $resolver)
     {
         $this->resolver = $resolver;
 
@@ -63,7 +63,7 @@ class Schema
     }
 
     /**
-     * Factory method which returns a new instance of the Schema with shared ObjectGraph $resolver and
+     * Factory method which returns a new instance of the Schema with shared root $resolver and
      * provided $context
      *
      * @param Context $context

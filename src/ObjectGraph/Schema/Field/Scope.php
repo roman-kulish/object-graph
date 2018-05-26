@@ -14,7 +14,7 @@ namespace ObjectGraph\Schema\Field;
 use Flow\JSONPath\JSONPath;
 use Flow\JSONPath\JSONPathException;
 use ObjectGraph\Exception\ObjectGraphException;
-use ObjectGraph\ObjectGraph;
+use ObjectGraph\Resolver;
 use stdClass;
 use Traversable;
 
@@ -23,21 +23,21 @@ use Traversable;
  * are bound to the Scope.
  *
  * Scope also provides a few useful features: an integration with JSONPath library to run XPath like queries
- * on a object; and access to the root ObjectGraph resolver.
+ * on a object; and access to the root resolver.
  *
  * @package ObjectGraph\Schema\Field
  */
 class Scope
 {
     /**
-     * @var ObjectGraph
+     * @var Resolver
      */
     private $resolver;
 
     /**
-     * @param ObjectGraph $resolver
+     * @param Resolver $resolver
      */
-    public function __construct(ObjectGraph $resolver)
+    public function __construct(Resolver $resolver)
     {
         $this->resolver = $resolver;
     }
@@ -66,9 +66,9 @@ class Scope
     }
 
     /**
-     * @return ObjectGraph
+     * @return Resolver
      */
-    public function getRootResolver(): ObjectGraph
+    public function getRootResolver(): Resolver
     {
         return $this->resolver;
     }

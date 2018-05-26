@@ -12,7 +12,7 @@
 namespace ObjectGraph\Schema\Builder;
 
 use Closure;
-use ObjectGraph\ObjectGraph;
+use ObjectGraph\Resolver;
 use ObjectGraph\Schema;
 use ObjectGraph\Schema\Field\Definition;
 use ObjectGraph\Schema\Field\Kind;
@@ -39,7 +39,7 @@ class FieldBuilderTest extends TestCase
      */
     protected function setUp()
     {
-        $this->fieldBuilder = new FieldBuilder(new Scope(new ObjectGraph()));
+        $this->fieldBuilder = new FieldBuilder(new Scope(new Resolver()));
 
         parent::setUp();
     }
@@ -92,7 +92,7 @@ class FieldBuilderTest extends TestCase
     public function testResolverScope()
     {
         $test          = $this;
-        $schemaBuilder = new SchemaBuilder(new Scope(new ObjectGraph()));
+        $schemaBuilder = new SchemaBuilder(new Scope(new Resolver()));
 
         $schemaBuilder->addField('test')->withResolver(function () use ($test) {
             $test->assertInstanceOf(Scope::class, $this);

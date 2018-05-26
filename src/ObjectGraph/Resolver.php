@@ -16,11 +16,11 @@ use ObjectGraph\Schema\Field\ScalarType;
 use stdClass;
 
 /**
- * Class ObjectGraph
+ * Class Resolver
  *
  * @package ObjectGraph
  */
-class ObjectGraph
+class Resolver
 {
     /**
      * @var Context
@@ -33,6 +33,11 @@ class ObjectGraph
     protected $scalarType;
 
     /**
+     * @var Schema[]
+     */
+    private $schemaCache = [];
+
+    /**
      * @param Context|null    $context
      * @param ScalarType|null $scalarTypeResolver
      */
@@ -43,49 +48,69 @@ class ObjectGraph
     }
 
     /**
-     * Resolve $data and return it in a proper format: scalar, GraphNode or an array of scalars or GraphNode(s)
+     * Resolve scalar $data according to the given $type
+     *
+     * Note: this method can be called recursively by the Schema
+     *
+     * @param mixed       $data
+     * @param string|null $type
+     *
+     * @return mixed
+     */
+    public function resolveScalar($data, string $type = null)
+    {
+        return $this->scalarType->cast($data, $type);
+    }
+
+    /**
+     * TODO
      *
      * This method is a default resolver and an entry point, where you can inspect $data, determine its type and
      * if it is an object then attempt to determine the correct Schema to use and finally pass it further
      * to the corresponding ObjectGraph::resolveXXX() method of this class.
      *
-     * @param mixed $data
+     * Note: this method can be called recursively by the Schema
      *
-     * @return mixed
+     * @param stdClass|null $data
+     * @param string|null   $schemaClassName
+     * @param Context|null  $context
+     *
+     * @return GraphNode|null
      */
-    public function resolve($data)
-    {
-        switch ($this->kindOf($data)) {
-            case Kind::SCALAR:
-                return $this->resolveScalar($data);
-
-            case Kind::GRAPH_NODE:
-                return $this->resolveObject($data);
-
-            case Kind::ARRAY:
-                return $this->resolveArray($data);
-
-            default:
-                return $data;
+    public function resolveObject(
+        stdClass $data = null,
+        string $schemaClassName = null,
+        Context $context = null
+    ): GraphNode {
+        if (empty($data)) {
+            return null;
         }
-    }
 
-    public function resolveScalar($data, string $type = null)
-    {
         // TODO
     }
 
-    public function resolveObject(stdClass $data, string $schemaClassName = null, Context $context = null): GraphNode
-    {
-        // TODO
-    }
-
+    /**
+     * TODO
+     *
+     * Note: this method can be called recursively by the Schema
+     *
+     * @param array|null   $data
+     * @param string       $kind
+     * @param string|null  $type
+     * @param Context|null $context
+     *
+     * @return array
+     */
     public function resolveArray(
-        array $data,
+        array $data = null,
         string $kind = Kind::RAW,
         string $type = null,
         Context $context = null
     ): array {
+        if (empty($data)) {
+            return [];
+        }
+
         // TODO
     }
 

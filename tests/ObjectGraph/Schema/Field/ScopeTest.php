@@ -11,7 +11,7 @@
 
 namespace ObjectGraph\Schema\Field;
 
-use ObjectGraph\ObjectGraph;
+use ObjectGraph\Resolver;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -24,7 +24,7 @@ class ScopeTest extends TestCase
 {
     public function testGetRootResolver()
     {
-        $resolver = new ObjectGraph();
+        $resolver = new Resolver();
         $scope    = new Scope($resolver);
 
         $this->assertSame($resolver, $scope->getRootResolver());
@@ -35,7 +35,7 @@ class ScopeTest extends TestCase
      */
     public function testQuery()
     {
-        $scope = new Scope(new ObjectGraph());
+        $scope = new Scope(new Resolver());
         $scope->query(new stdClass(), 'boom!');
     }
 }
