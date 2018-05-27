@@ -101,6 +101,8 @@ class Definition
             case Kind::GRAPH_NODE:
             case Kind::ARRAY:
             case Kind::RAW:
+            case Kind::SCALAR_ARRAY:
+            case Kind::GRAPH_NODE_ARRAY:
             case null:
                 $this->kind = $kind;
                 break;

@@ -79,7 +79,7 @@ class Context implements ArrayAccess
      * @link  http://php.net/manual/en/arrayaccess.offsetset.php
      *
      * @param string $offset The offset to assign the value to
-     * @param mixed $value  The value to set
+     * @param mixed  $value  The value to set
      */
     public function offsetSet($offset, $value)
     {

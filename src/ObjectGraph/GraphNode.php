@@ -92,7 +92,7 @@ class GraphNode implements ArrayAccess
     {
         $fields = $this->schema->getFields();
 
-        if (! $this->schema->isStrict()) {
+        if (!$this->schema->isStrict()) {
             $objectVars = get_object_vars($this->getData());
             $fields     = array_merge(array_keys($objectVars), $fields);
         }

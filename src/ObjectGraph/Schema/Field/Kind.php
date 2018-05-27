@@ -18,8 +18,15 @@ namespace ObjectGraph\Schema\Field;
  */
 interface Kind
 {
-    const SCALAR = 'scalar';
+    const SCALAR     = 'scalar';
     const GRAPH_NODE = 'graph_node';
-    const ARRAY = 'array';
-    const RAW = 'raw';
+    const ARRAY      = 'array';
+    const RAW        = 'raw';
+
+    /**
+     * Special cases
+     */
+
+    const SCALAR_ARRAY     = 'scalar_array';
+    const GRAPH_NODE_ARRAY = 'graph_node_array';
 }

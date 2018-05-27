@@ -87,4 +87,12 @@ class ScalarTypeTest extends TestCase
     {
         $this->scalarType->cast(null, 'dummy');
     }
+
+    /**
+     * @expectedException \ObjectGraph\Exception\InvalidArgumentException
+     */
+    public function testInvalidDateTimeException()
+    {
+        $this->scalarType->cast('I am not invalid datetime string', ScalarType::DATE_TIME);
+    }
 }

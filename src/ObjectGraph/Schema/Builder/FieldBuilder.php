@@ -142,7 +142,7 @@ class FieldBuilder
     public function asScalarArray(string $type = null): self
     {
         $this->definition
-            ->setKind(Kind::ARRAY)
+            ->setKind(Kind::SCALAR_ARRAY)
             ->setType($type);
 
         return $this;
@@ -158,8 +158,25 @@ class FieldBuilder
     public function asGraphNodeArray(string $schemaClassName = Schema::class): self
     {
         $this->definition
-            ->setKind(Kind::ARRAY)
+            ->setKind(Kind::GRAPH_NODE_ARRAY)
             ->setType($schemaClassName);
+
+        return $this;
+    }
+
+    /**
+     * Cast each array value returned from the resolver according to each PHP type
+     * detected by the root resolver
+     *
+     * @param string|null $type
+     *
+     * @return FieldBuilder
+     */
+    public function asArray(string $type = null): self
+    {
+        $this->definition
+            ->setKind(Kind::ARRAY)
+            ->setType($type);
 
         return $this;
     }
@@ -169,7 +186,7 @@ class FieldBuilder
      *
      * @return FieldBuilder
      */
-    public function raw(): self
+    public function asRawData(): self
     {
         $this->definition
             ->setKind(Kind::RAW)

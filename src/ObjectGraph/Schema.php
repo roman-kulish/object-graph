@@ -169,6 +169,14 @@ class Schema
             case Kind::ARRAY:
                 return $this->resolver->resolveArray($value, null, $type, $context);
 
+            case Kind::SCALAR_ARRAY:
+                return $this->resolver->resolveArray($value, Kind::SCALAR, $type, $context);
+                break;
+
+            case Kind::GRAPH_NODE_ARRAY:
+                return $this->resolver->resolveArray($value, Kind::GRAPH_NODE, $type, $context);
+                break;
+
             default:
                 return $data;
         }

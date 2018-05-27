@@ -130,7 +130,7 @@ class FieldBuilderTest extends TestCase
         $expectedClassName = stdClass::class;
 
         $this->fieldBuilder->asGraphNodeArray();
-        $this->assertEquals(Kind::ARRAY, $definition->getKind());
+        $this->assertEquals(Kind::GRAPH_NODE_ARRAY, $definition->getKind());
         $this->assertEquals(Schema::class, $definition->getType());
 
         $this->fieldBuilder->asGraphNodeArray($expectedClassName);
@@ -164,10 +164,27 @@ class FieldBuilderTest extends TestCase
         $expectedType = ScalarType::TIMESTAMP;
 
         $this->fieldBuilder->asScalarArray();
-        $this->assertEquals(Kind::ARRAY, $definition->getKind());
+        $this->assertEquals(Kind::SCALAR_ARRAY, $definition->getKind());
         $this->assertNull($definition->getType());
 
         $this->fieldBuilder->asScalarArray($expectedType);
+        $this->assertEquals($expectedType, $definition->getType());
+    }
+
+    /**
+     * @covers \ObjectGraph\Schema\Field\Definition::setKind()
+     * @covers \ObjectGraph\Schema\Field\Definition::setType()
+     */
+    public function testArray()
+    {
+        $definition   = $this->fieldBuilder->getDefinition();
+        $expectedType = ScalarType::TIMESTAMP;
+
+        $this->fieldBuilder->asArray();
+        $this->assertEquals(Kind::ARRAY, $definition->getKind());
+        $this->assertNull($definition->getType());
+
+        $this->fieldBuilder->asArray($expectedType);
         $this->assertEquals($expectedType, $definition->getType());
     }
 
@@ -179,7 +196,7 @@ class FieldBuilderTest extends TestCase
     {
         $definition = $this->fieldBuilder->getDefinition();
 
-        $this->fieldBuilder->raw();
+        $this->fieldBuilder->asRawData();
 
         $this->assertEquals(Kind::RAW, $definition->getKind());
         $this->assertNull($definition->getType());

@@ -23,10 +23,10 @@ use ObjectGraph\Exception\InvalidArgumentException;
  */
 class ScalarType
 {
-    const BOOLEAN = 'bool';
-    const INTEGER = 'int';
-    const FLOAT = 'float';
-    const STRING = 'string';
+    const BOOLEAN   = 'bool';
+    const INTEGER   = 'int';
+    const FLOAT     = 'float';
+    const STRING    = 'string';
     const DATE_TIME = 'datetime';
     const TIMESTAMP = 'timestamp';
 

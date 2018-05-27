@@ -34,7 +34,7 @@ class Memoize
      */
     public function memoize(string $property, callable $func)
     {
-        if (! $this->isCached($property)) {
+        if (!$this->isCached($property)) {
             $this->cache[$property] = $func();
         }
 
