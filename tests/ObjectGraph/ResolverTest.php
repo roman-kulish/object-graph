@@ -104,6 +104,21 @@ class ResolverTest extends TestCase
         }
     }
 
+    public function testRawArray()
+    {
+        $expectedData = [
+            'field1' => false,
+            'field2' => 'dummy',
+            'field3' => 1,
+        ];
+
+        $resolver = new Resolver();
+        $received = $resolver->resolveArray($expectedData, Kind::RAW);
+
+        $this->assertSame($expectedData, $received);
+    }
+
+
     /**
      * @param $value
      * @param $expectedKind
@@ -133,6 +148,15 @@ class ResolverTest extends TestCase
     {
         $resolver = new Resolver();
         $resolver->resolveObject(new stdClass(), stdClass::class);
+    }
+
+    /**
+     * @expectedException \ObjectGraph\Exception\ObjectGraphException
+     */
+    public function testArrayResolverUnsupportedKindException()
+    {
+        $resolver = new Resolver();
+        $resolver->resolveArray([1, 2, 3], 'dummy');
     }
 
     public function dataProviderUserResolver()
