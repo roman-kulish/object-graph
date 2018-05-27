@@ -80,9 +80,9 @@ class Resolver
      */
     public function resolveObject(
         stdClass $data = null,
-        string $schemaClassName = null,
+        string $schemaClassName = Schema::class,
         Context $context = null
-    ): GraphNode {
+    ) {
         if (empty($data)) {
             return null;
         }

@@ -16,6 +16,7 @@ use InvalidArgumentException;
 use ObjectGraph\Schema\Field\Kind;
 use ObjectGraph\Test\GraphNode\User;
 use ObjectGraph\Test\Resolver\UserResolver;
+use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use stdClass;
@@ -50,9 +51,25 @@ class ResolverTest extends TestCase
         $this->assertEquals($expectedFirstName, $graphNode->firstName);
         $this->assertEquals($expectedLastName, $graphNode->lastName);
         $this->assertEquals($expectedFullName, $graphNode->fullName);
+        $this->assertInstanceOf(DateTime::class, $graphNode->dateOfBirth);
         $this->assertEquals($expectedDateOfBirth, $graphNode->dateOfBirth);
         $this->assertEquals($expectedEmail, $graphNode->email);
         $this->assertEquals($schema, $graphNode->schema);
+    }
+
+    public function testObjectResolverWithNullData()
+    {
+        $resolver = new Resolver();
+
+        $this->assertNull($resolver->resolveObject(null));
+    }
+
+    public function testArrayResolverWithNullData()
+    {
+        $resolver = new Resolver();
+
+        $this->assertInternalType(IsType::TYPE_ARRAY, $resolver->resolveArray(null));
+        $this->assertEmpty($resolver->resolveArray(null));
     }
 
     /**
