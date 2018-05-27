@@ -93,7 +93,7 @@ class Resolver
             $schemaClassName = Schema::class;
         }
 
-        if (!isset($this->schemaCache)) {
+        if (!isset($this->schemaCache[$schemaClassName])) {
             $this->schemaCache[$schemaClassName] = new $schemaClassName($this);
         }
 
