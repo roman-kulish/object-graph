@@ -24,8 +24,8 @@ class GraphNodeTest extends TestCase
 
         $graphNode = new GraphNode($data, new Schema(new Resolver()));
 
-//        $this->assertFalse(isset($graphNode->dummy));
-//        $this->assertFalse(isset($graphNode['dummy']));
+        $this->assertFalse(isset($graphNode->dummy));
+        $this->assertFalse(isset($graphNode['dummy']));
 
         $this->assertTrue(isset($graphNode->field));
         $this->assertTrue(isset($graphNode['field']));

@@ -215,9 +215,9 @@ class Resolver
     protected function assertSameClassOrSubclassOf(string $className, string $baseClassName): bool
     {
         if (!class_exists($className)) {
-            throw new ObjectGraphException('Class %s does not exist', $className);
+            throw new ObjectGraphException(sprintf('Class %s does not exist', $className));
         } elseif (!is_a($className, $baseClassName, true)) {
-            throw new ObjectGraphException('Class %s must extend %s', $className, $baseClassName);
+            throw new ObjectGraphException(sprintf('Class %s must extend %s', $className, $baseClassName));
         }
 
         return true;

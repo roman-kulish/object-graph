@@ -12,7 +12,7 @@
 namespace ObjectGraph;
 
 use ObjectGraph\Schema\Builder\SchemaBuilder;
-use ObjectGraph\Test\SchemaSerializationTest;
+use ObjectGraph\Test\Schema\SchemaSerializationTest;
 use PHPUnit\Framework\TestCase;
 
 /**

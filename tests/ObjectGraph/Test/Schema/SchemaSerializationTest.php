@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ObjectGraph\Test;
+namespace ObjectGraph\Test\Schema;
 
 use ObjectGraph\Schema;
 use ObjectGraph\Schema\Builder\SchemaBuilder;
@@ -18,7 +18,7 @@ use stdClass;
 /**
  * Class SchemaSerializationTest
  *
- * @package ObjectGraph\Test
+ * @package ObjectGraph\Test\Schema
  */
 class SchemaSerializationTest extends Schema
 {
