@@ -14,8 +14,11 @@ namespace ObjectGraph;
 use DateTime;
 use InvalidArgumentException;
 use ObjectGraph\Schema\Field\Kind;
+use ObjectGraph\Test\GraphNode\Student;
 use ObjectGraph\Test\GraphNode\User;
 use ObjectGraph\Test\Resolver\UserResolver;
+use ObjectGraph\Test\Schema\ScalarArraySchema;
+use ObjectGraph\Test\Schema\StudentsArraySchema;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -70,6 +73,35 @@ class ResolverTest extends TestCase
 
         $this->assertInternalType(IsType::TYPE_ARRAY, $resolver->resolveArray(null));
         $this->assertEmpty($resolver->resolveArray(null));
+    }
+
+    public function testScalarArray()
+    {
+        $data     = $this->loadJson('scalar-array.json');
+        $resolver = new Resolver();
+
+        $graphNode = $resolver->resolveObject($data, ScalarArraySchema::class);
+        $this->assertArrayHasKey('field', $graphNode);
+
+        $received = $graphNode->field;
+        $this->assertInternalType(IsType::TYPE_ARRAY, $received);
+
+        foreach ($received as $value) {
+            $this->assertSame(1, $value);
+        }
+    }
+
+    public function testGraphNodeArray()
+    {
+        $data     = $this->loadJson('students.json');
+        $resolver = new Resolver();
+
+        $graphNode = $resolver->resolveObject($data, StudentsArraySchema::class);
+        $this->assertArrayHasKey('students', $graphNode);
+
+        foreach ($graphNode->students as $student) {
+            $this->assertInstanceOf(Student::class, $student);
+        }
     }
 
     /**
