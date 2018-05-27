@@ -143,7 +143,7 @@ class GraphNode implements ArrayAccess
      */
     public function __isset($name)
     {
-        return isset($this->$name);
+        return (null !== $this->$name);
     }
 
     /**
