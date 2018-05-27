@@ -28,6 +28,8 @@ class TransformerTest extends TestCase
     protected $expectedFirstName = 'Bob';
     protected $expectedLastName = 'Marley';
 
+    protected $expectedInfo;
+
     protected $expectedAlbums = [
         'The Wailing Wailers',
         'Soul Rebels',
@@ -45,9 +47,15 @@ class TransformerTest extends TestCase
      */
     protected function setUp()
     {
+        $this->expectedInfo = (object)[
+            'religion' => 'Rastafari',
+            'born'     => '6 February 1945',
+        ];
+
         $data = (object)[
             'firstName' => $this->expectedFirstName,
             'lastName'  => $this->expectedLastName,
+            'info'      => $this->expectedInfo,
             'albums'    => $this->expectedAlbums,
         ];
 
@@ -63,10 +71,12 @@ class TransformerTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $received);
         $this->assertObjectHasAttribute('firstName', $received);
         $this->assertObjectHasAttribute('lastName', $received);
+        $this->assertObjectHasAttribute('info', $received);
         $this->assertObjectHasAttribute('albums', $received);
 
         $this->assertEquals($this->expectedFirstName, $received->firstName);
         $this->assertEquals($this->expectedLastName, $received->lastName);
+        $this->assertEquals($this->expectedInfo, $received->info);
         $this->assertEquals($this->expectedAlbums, $received->albums);
     }
 
@@ -77,10 +87,12 @@ class TransformerTest extends TestCase
         $this->assertInternalType(IsType::TYPE_ARRAY, $received);
         $this->assertArrayHasKey('firstName', $received);
         $this->assertArrayHasKey('lastName', $received);
+        $this->assertArrayHasKey('info', $received);
         $this->assertArrayHasKey('albums', $received);
 
         $this->assertEquals($this->expectedFirstName, $received['firstName']);
         $this->assertEquals($this->expectedLastName, $received['lastName']);
+        $this->assertEquals($this->expectedInfo, $received['info']);
         $this->assertEquals($this->expectedAlbums, $received['albums']);
     }
 }

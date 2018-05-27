@@ -156,7 +156,7 @@ class Schema
                 $value = null;
         }
 
-        if (empty($value)) {
+        if (is_null($value)) {
             $value = $default;
         }
 
