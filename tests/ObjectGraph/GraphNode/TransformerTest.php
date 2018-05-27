@@ -16,6 +16,7 @@ use ObjectGraph\GraphNode;
 use ObjectGraph\Resolver;
 use ObjectGraph\Schema;
 use ObjectGraph\Test\Schema\StudentsArraySchema;
+use ObjectGraph\Test\Schema\YoutubeSchema;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -122,6 +123,86 @@ class TransformerTest extends TestCase
 
         foreach ($data->students as $student) {
             $this->assertInstanceOf(stdClass::class, $student);
+        }
+    }
+
+    public function testComplexGraphNodeAsObject()
+    {
+        $data     = $this->loadJson('youtube.json');
+        $resolver = new Resolver();
+
+        $graphNode = $resolver->resolveObject($data, YoutubeSchema::class);
+        $data      = $graphNode->asObject();
+
+        $this->assertObjectHasAttribute('kind', $data);
+        $this->assertObjectHasAttribute('etag', $data);
+        $this->assertObjectHasAttribute('nextPageToken', $data);
+        $this->assertObjectHasAttribute('regionCode', $data);
+        $this->assertObjectHasAttribute('pageInfo', $data);
+        $this->assertObjectHasAttribute('items', $data);
+
+        $this->assertInstanceOf(stdClass::class, $data->pageInfo);
+
+        $pageInfo = $data->pageInfo;
+
+        $this->assertObjectHasAttribute('totalResults', $pageInfo);
+        $this->assertObjectHasAttribute('resultsPerPage', $pageInfo);
+
+        $this->assertInternalType(IsType::TYPE_ARRAY, $data->items);
+
+        foreach ($data->items as $item) {
+            $this->assertInstanceOf(stdClass::class, $item);
+            $this->assertObjectHasAttribute('kind', $item);
+            $this->assertObjectHasAttribute('etag', $item);
+            $this->assertObjectHasAttribute('id', $item);
+
+            $this->assertInstanceOf(stdClass::class, $item->id);
+
+            $id = $item->id;
+
+            $this->assertObjectHasAttribute('kind', $id);
+            $this->assertObjectHasAttribute('channelId', $id);
+            $this->assertObjectHasAttribute('videoId', $id);
+        }
+    }
+
+    public function testComplexGraphNodeAsArray()
+    {
+        $data     = $this->loadJson('youtube.json');
+        $resolver = new Resolver();
+
+        $graphNode = $resolver->resolveObject($data, YoutubeSchema::class);
+        $data      = $graphNode->asArray();
+
+        $this->assertArrayHasKey('kind', $data);
+        $this->assertArrayHasKey('etag', $data);
+        $this->assertArrayHasKey('nextPageToken', $data);
+        $this->assertArrayHasKey('regionCode', $data);
+        $this->assertArrayHasKey('pageInfo', $data);
+        $this->assertArrayHasKey('items', $data);
+
+        $this->assertInternalType(IsType::TYPE_ARRAY, $data['pageInfo']);
+
+        $pageInfo = $data['pageInfo'];
+
+        $this->assertArrayHasKey('totalResults', $pageInfo);
+        $this->assertArrayHasKey('resultsPerPage', $pageInfo);
+
+        $this->assertInternalType(IsType::TYPE_ARRAY, $data['items']);
+
+        foreach ($data['items'] as $item) {
+            $this->assertInternalType(IsType::TYPE_ARRAY, $item);
+            $this->assertArrayHasKey('kind', $item);
+            $this->assertArrayHasKey('etag', $item);
+            $this->assertArrayHasKey('id', $item);
+
+            $this->assertInternalType(IsType::TYPE_ARRAY, $item['id']);
+
+            $id = $item['id'];
+
+            $this->assertArrayHasKey('kind', $id);
+            $this->assertArrayHasKey('channelId', $id);
+            $this->assertArrayHasKey('videoId', $id);
         }
     }
 

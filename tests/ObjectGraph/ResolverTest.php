@@ -174,7 +174,7 @@ class ResolverTest extends TestCase
         ];
 
         $resolver = new Resolver();
-        $received = $resolver->resolveArray($data);
+        $received = $resolver->resolveArray($data, Kind::ARRAY);
 
         $this->assertCount(1, $received);
         $this->assertInternalType(IsType::TYPE_ARRAY, $received[0]);

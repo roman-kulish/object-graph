@@ -153,11 +153,9 @@ class Resolver
 
                 case Kind::SCALAR_ARRAY:
                     return $resolver->resolveArray($data, Kind::SCALAR, $type, $context);
-                    break;
 
                 case Kind::GRAPH_NODE_ARRAY:
                     return $resolver->resolveArray($data, Kind::GRAPH_NODE, $type, $context);
-                    break;
 
                 /**
                  * Pass through element
