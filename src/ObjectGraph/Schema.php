@@ -129,16 +129,33 @@ class Schema
     public function resolve(string $field, stdClass $data)
     {
         if (isset($this->fields[$field])) {
+
+            /**
+             * Use field definition
+             */
+
             $definition = $this->fields[$field];
+            $alias      = $definition->getAlias();
             $resolver   = $definition->getResolver();
             $default    = $definition->getDefault();
             $kind       = $definition->getKind();
             $type       = $definition->getType();
         } else {
             if ($this->isStrict()) {
+
+                /**
+                 * This is a strict schema and the requested $field is not defined,
+                 * so short-circuit here and return NULL
+                 */
+
                 return null;
             }
 
+            /**
+             * Define default parameters
+             */
+
+            $alias    = null;
             $resolver = null;
             $default  = null;
             $kind     = Kind::RAW;
@@ -146,6 +163,15 @@ class Schema
         }
 
         $context = clone $this->context;
+
+        if (!empty($alias)) {
+
+            /**
+             * The $field is an alias to the property named as $alias
+             */
+
+            $field = $alias;
+        }
 
         switch (true) {
             case ($resolver instanceof Closure):
@@ -163,6 +189,10 @@ class Schema
         if (is_null($value)) {
             $value = $default;
         }
+
+        /**
+         * Finally, resolve $value based on the given $kind and $type, or its PHP type
+         */
 
         switch ($kind ?: $this->resolver->kindOf($value)) {
             case Kind::SCALAR:

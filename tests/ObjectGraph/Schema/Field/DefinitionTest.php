@@ -28,4 +28,27 @@ class DefinitionTest extends TestCase
         $definition = new Definition();
         $definition->setKind(999);
     }
+
+    /**
+     * @expectedException \ObjectGraph\Exception\InvalidArgumentException
+     */
+    public function testAliasDefinedException()
+    {
+        $definition = new Definition();
+        $definition->setResolver(function () {
+        });
+
+        $definition->setAlias('dummy');
+    }
+
+    /**
+     * @expectedException \ObjectGraph\Exception\InvalidArgumentException
+     */
+    public function testResolverDefinedException()
+    {
+        $definition = new Definition();
+        $definition->setAlias('dummy');
+        $definition->setResolver(function () {
+        });
+    }
 }

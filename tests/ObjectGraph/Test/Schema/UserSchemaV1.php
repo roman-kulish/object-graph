@@ -81,18 +81,9 @@ class UserSchemaV1 extends Schema
             return (sizeof($name) === 2 ? $name[1] : null);
         });
 
-        $schema->addField('fullName')->withResolver(function (stdClass $data) {
-            return (empty($data->userName) ? null : $data->userName);
-        });
-
-        $schema->addField('dateOfBirth')->asScalarValue(ScalarType::DATE_TIME)->withResolver(function (stdClass $data) {
-            return (empty($data->dob) ? null : $data->dob);
-        });
-
-        $schema->addField('email')->withResolver(function (stdClass $data) {
-            return (empty($data->emailAddress) ? null : $data->emailAddress);
-        });
-
+        $schema->addField('fullName')->asAliasOf('userName');
+        $schema->addField('dateOfBirth')->asAliasOf('dob')->asScalarValue(ScalarType::DATE_TIME);
+        $schema->addField('email')->asAliasOf('emailAddress');
         $schema->addField('schema')->withDefaultValue(User::SCHEMA_V1);
     }
 }

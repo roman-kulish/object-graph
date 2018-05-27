@@ -22,6 +22,11 @@ use ObjectGraph\Exception\InvalidArgumentException;
 class Definition
 {
     /**
+     * @var string|null
+     */
+    protected $alias;
+
+    /**
      * @var null|mixed
      */
     protected $default;
@@ -40,6 +45,30 @@ class Definition
      * @var null|string
      */
     protected $type;
+
+    /**
+     * @return null|string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    /**
+     * @param null|string $alias
+     *
+     * @return Definition
+     */
+    public function setAlias(string $alias = null)
+    {
+        if ($this->resolver instanceof Closure) {
+            throw new InvalidArgumentException('A resolver and an alias cannot be defined for the same field');
+        }
+
+        $this->alias = $alias;
+
+        return $this;
+    }
 
     /**
      * @return mixed|null
@@ -76,6 +105,10 @@ class Definition
      */
     public function setResolver(Closure $resolver = null): self
     {
+        if (!empty($this->alias)) {
+            throw new InvalidArgumentException('A resolver and an alias cannot be defined for the same field');
+        }
+
         $this->resolver = $resolver;
 
         return $this;

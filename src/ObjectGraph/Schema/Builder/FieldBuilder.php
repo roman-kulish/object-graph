@@ -69,6 +69,20 @@ class FieldBuilder
     }
 
     /**
+     * Set the field to be a property alias
+     *
+     * @param string|null $name
+     *
+     * @return FieldBuilder
+     */
+    public function asAliasOf(string $name = null): self
+    {
+        $this->definition->setAlias($name);
+
+        return $this;
+    }
+
+    /**
      * Set default field value
      *
      * @param mixed $value
