@@ -1,3 +1,3 @@
-### 1.0.0-DEV1
+### 1.0.0
 
   * Initial release
