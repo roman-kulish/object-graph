@@ -51,7 +51,7 @@ class Transformer
         $result = new stdClass();
 
         foreach ($this->fields as $field) {
-            $value = $this->$field;
+            $value = $this->graphNode->$field;
 
             switch (true) {
                 case ($value instanceof self):
@@ -79,7 +79,7 @@ class Transformer
         $result = [];
 
         foreach ($this->fields as $field) {
-            $value = $this->$field;
+            $value = $this->graphNode->$field;
 
             switch (true) {
                 case ($value instanceof self):

@@ -46,6 +46,7 @@ class Schema
     final public function __construct(Resolver $resolver)
     {
         $this->resolver = $resolver;
+        $this->context  = new Context();
 
         $this->init();
     }
@@ -178,7 +179,7 @@ class Schema
                 break;
 
             default:
-                return $data;
+                return $value;
         }
     }
 
