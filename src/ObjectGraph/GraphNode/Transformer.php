@@ -54,7 +54,7 @@ class Transformer
             $value = $this->graphNode->$field;
 
             switch (true) {
-                case ($value instanceof self):
+                case ($value instanceof GraphNode):
                     $value = $value->asObject();
                     break;
 
@@ -82,7 +82,7 @@ class Transformer
             $value = $this->graphNode->$field;
 
             switch (true) {
-                case ($value instanceof self):
+                case ($value instanceof GraphNode):
                     $value = $value->asArray();
                     break;
 
@@ -111,7 +111,7 @@ class Transformer
 
         foreach ($source as $index => $value) {
             switch (true) {
-                case ($value instanceof self):
+                case ($value instanceof GraphNode):
                     $value = ($asObject ? $value->asObject() : $value->asArray());
                     break;
 

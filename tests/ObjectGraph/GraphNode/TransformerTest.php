@@ -11,11 +11,14 @@
 
 namespace ObjectGraph\GraphNode;
 
+use InvalidArgumentException;
 use ObjectGraph\GraphNode;
 use ObjectGraph\Resolver;
 use ObjectGraph\Schema;
+use ObjectGraph\Test\Schema\StudentsArraySchema;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use stdClass;
 
 /**
@@ -94,5 +97,53 @@ class TransformerTest extends TestCase
         $this->assertEquals($this->expectedLastName, $received['lastName']);
         $this->assertEquals($this->expectedInfo, $received['info']);
         $this->assertEquals($this->expectedAlbums, $received['albums']);
+    }
+
+    public function testNestedArrayObject()
+    {
+        $data     = $this->loadJson('students.json');
+        $resolver = new Resolver();
+
+        $graphNode = $resolver->resolveObject($data, StudentsArraySchema::class);
+        $data      = $graphNode->asArray();
+
+        foreach ($data['students'] as $student) {
+            $this->assertInternalType(IsType::TYPE_ARRAY, $student);
+        }
+    }
+
+    public function testNestedArray()
+    {
+        $data     = $this->loadJson('students.json');
+        $resolver = new Resolver();
+
+        $graphNode = $resolver->resolveObject($data, StudentsArraySchema::class);
+        $data      = $graphNode->asObject();
+
+        foreach ($data->students as $student) {
+            $this->assertInstanceOf(stdClass::class, $student);
+        }
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @return stdClass
+     */
+    protected function loadJson(string $filename): stdClass
+    {
+        $path = dirname(__DIR__) . '/Test/Data/' . $filename;
+
+        if (!is_file($path)) {
+            throw new InvalidArgumentException(sprintf('File %s does not exist', $filename));
+        }
+
+        $data = json_decode(file_get_contents($path));
+
+        if (!($data instanceof stdClass)) {
+            throw new RuntimeException(sprintf('Unable to decode JSON file %s', $path));
+        }
+
+        return $data;
     }
 }
