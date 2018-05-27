@@ -15,6 +15,7 @@ use DateTime;
 use DateTimeZone;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * Class ScalarTypeTest
@@ -39,6 +40,20 @@ class ScalarTypeTest extends TestCase
         parent::setUp();
     }
 
+    public function testNullType()
+    {
+        $expected = new stdClass();
+        $received = $this->scalarType->cast($expected);
+
+        $this->assertSame($expected, $received);
+    }
+
+    public function testScalar()
+    {
+        $this->assertSame(1, $this->scalarType->cast('1', ScalarType::INTEGER));
+        $this->assertSame(1.0, $this->scalarType->cast('1', ScalarType::FLOAT));
+        $this->assertSame('1', $this->scalarType->cast(1, ScalarType::STRING));
+    }
 
     public function testBoolean()
     {

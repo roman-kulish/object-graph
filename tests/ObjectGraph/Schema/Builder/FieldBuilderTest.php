@@ -44,12 +44,6 @@ class FieldBuilderTest extends TestCase
         parent::setUp();
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::getDefault()
-     * @covers \ObjectGraph\Schema\Field\Definition::getResolver()
-     * @covers \ObjectGraph\Schema\Field\Definition::getKind()
-     * @covers \ObjectGraph\Schema\Field\Definition::getType()
-     */
     public function testDefaultDefinition()
     {
         $definition = $this->fieldBuilder->getDefinition();
@@ -61,9 +55,6 @@ class FieldBuilderTest extends TestCase
         $this->assertNull($definition->getType());
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::setDefault()
-     */
     public function testDefaultValue()
     {
         $definition           = $this->fieldBuilder->getDefinition();
@@ -73,9 +64,6 @@ class FieldBuilderTest extends TestCase
         $this->assertSame($expectedDefaultValue, $definition->getDefault());
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::setResolver()
-     */
     public function testResolver()
     {
         $definition       = $this->fieldBuilder->getDefinition();
@@ -103,10 +91,6 @@ class FieldBuilderTest extends TestCase
         call_user_func($schema['test']->getResolver());
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::setKind()
-     * @covers \ObjectGraph\Schema\Field\Definition::setType()
-     */
     public function testGraphNode()
     {
         $definition        = $this->fieldBuilder->getDefinition();
@@ -120,10 +104,6 @@ class FieldBuilderTest extends TestCase
         $this->assertEquals($expectedClassName, $definition->getType());
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::setKind()
-     * @covers \ObjectGraph\Schema\Field\Definition::setType()
-     */
     public function testGraphNodeArray()
     {
         $definition        = $this->fieldBuilder->getDefinition();
@@ -137,10 +117,6 @@ class FieldBuilderTest extends TestCase
         $this->assertEquals($expectedClassName, $definition->getType());
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::setKind()
-     * @covers \ObjectGraph\Schema\Field\Definition::setType()
-     */
     public function testScalarValue()
     {
         $definition   = $this->fieldBuilder->getDefinition();
@@ -154,10 +130,6 @@ class FieldBuilderTest extends TestCase
         $this->assertEquals($expectedType, $definition->getType());
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::setKind()
-     * @covers \ObjectGraph\Schema\Field\Definition::setType()
-     */
     public function testScalarArray()
     {
         $definition   = $this->fieldBuilder->getDefinition();
@@ -171,10 +143,6 @@ class FieldBuilderTest extends TestCase
         $this->assertEquals($expectedType, $definition->getType());
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::setKind()
-     * @covers \ObjectGraph\Schema\Field\Definition::setType()
-     */
     public function testArray()
     {
         $definition   = $this->fieldBuilder->getDefinition();
@@ -188,10 +156,6 @@ class FieldBuilderTest extends TestCase
         $this->assertEquals($expectedType, $definition->getType());
     }
 
-    /**
-     * @covers \ObjectGraph\Schema\Field\Definition::setKind()
-     * @covers \ObjectGraph\Schema\Field\Definition::setType()
-     */
     public function testRaw()
     {
         $definition = $this->fieldBuilder->getDefinition();
