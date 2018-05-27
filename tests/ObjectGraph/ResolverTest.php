@@ -14,6 +14,7 @@ namespace ObjectGraph;
 use DateTime;
 use InvalidArgumentException;
 use ObjectGraph\Schema\Field\Kind;
+use ObjectGraph\Schema\Field\ScalarType;
 use ObjectGraph\Test\GraphNode\Student;
 use ObjectGraph\Test\GraphNode\User;
 use ObjectGraph\Test\Resolver\UserResolver;
@@ -104,6 +105,86 @@ class ResolverTest extends TestCase
         }
     }
 
+    public function testNestedScalarArray()
+    {
+        $data = [
+            [
+                1,
+                2,
+                3,
+            ],
+        ];
+
+        $resolver = new Resolver();
+        $received = $resolver->resolveArray($data, Kind::SCALAR_ARRAY, ScalarType::INTEGER);
+
+        $this->assertCount(1, $received);
+        $this->assertInternalType(IsType::TYPE_ARRAY, $received[0]);
+
+        foreach ($received[0] as $value) {
+            $expectedValue = current($data[0]);
+
+            $this->assertEquals($expectedValue, $value);
+
+            next($data[0]);
+        }
+    }
+
+    public function testNestedGraphNodeArray()
+    {
+        $data = [
+            [
+                (object)[
+                    'field' => 1,
+                ],
+                (object)[
+                    'field' => 2,
+                ],
+                (object)[
+                    'field' => 3,
+                ],
+            ],
+        ];
+
+        $resolver = new Resolver();
+        $received = $resolver->resolveArray($data, Kind::GRAPH_NODE_ARRAY);
+
+        $this->assertCount(1, $received);
+        $this->assertInternalType(IsType::TYPE_ARRAY, $received[0]);
+
+        foreach ($received[0] as $value) {
+            $expectedValue = current($data[0]);
+
+            $this->assertInstanceOf(GraphNode::class, $value);
+            $this->assertEquals($expectedValue->field, $value->field);
+
+            next($data[0]);
+        }
+    }
+
+    public function testNestedArray()
+    {
+        $data = [
+            [
+                (object)[
+                    'field' => 1,
+                ],
+                'dummy',
+            ],
+        ];
+
+        $resolver = new Resolver();
+        $received = $resolver->resolveArray($data);
+
+        $this->assertCount(1, $received);
+        $this->assertInternalType(IsType::TYPE_ARRAY, $received[0]);
+        $this->assertCount(2, $received[0]);
+
+        $this->assertInstanceOf(GraphNode::class, $received[0][0]);
+        $this->assertEquals($data[0][0]->field, $received[0][0]->field);
+        $this->assertEquals($data[0][1], $received[0][1]);
+    }
+
     public function testRawArray()
     {
         $expectedData = [
@@ -117,7 +198,6 @@ class ResolverTest extends TestCase
 
         $this->assertSame($expectedData, $received);
     }
-
 
     /**
      * @param $value

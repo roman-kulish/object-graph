@@ -80,7 +80,7 @@ class Resolver
      */
     public function resolveObject(
         stdClass $data = null,
-        string $schemaClassName = Schema::class,
+        string $schemaClassName = null,
         Context $context = null
     ) {
         if (empty($data)) {
@@ -122,7 +122,7 @@ class Resolver
      */
     public function resolveArray(
         array $data = null,
-        string $kind = Kind::RAW,
+        string $kind = null,
         string $type = null,
         Context $context = null
     ): array {
