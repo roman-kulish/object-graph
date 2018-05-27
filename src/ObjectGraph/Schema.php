@@ -135,6 +135,10 @@ class Schema
             $kind       = $definition->getKind();
             $type       = $definition->getType();
         } else {
+            if ($this->isStrict()) {
+                return null;
+            }
+
             $resolver = null;
             $default  = null;
             $kind     = Kind::RAW;

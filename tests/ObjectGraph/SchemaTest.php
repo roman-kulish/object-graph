@@ -83,6 +83,49 @@ class SchemaTest extends TestCase
         $this->assertEquals($expectedFields, $schema->getFields());
     }
 
+    public function testStrictSchema()
+    {
+        $data = (object)[
+            'dummy' => 'garbage',
+            'field' => 1,
+        ];
+
+        $schema = new class(new Resolver()) extends Schema
+        {
+            /**
+             * Whether this schema is strict or not
+             *
+             * This changes behaviour when iterating or serializing GraphNode instance. If schema is strict,
+             * then only fields defined on schema will be iterated over or serialized.
+             *
+             * Otherwise, object fields which are not defined on the schema will be used as well.
+             *
+             * @return bool
+             */
+            public function isStrict(): bool
+            {
+                return true;
+            }
+
+            /**
+             * Initialise schema
+             *
+             * This is a sub-constructor, which is invoked by the {@see Schema::__construct()} and
+             * it should contain all the schema initialization logic
+             *
+             * @param SchemaBuilder $schema
+             */
+            protected function build(SchemaBuilder $schema)
+            {
+                $schema->addField('field');
+            }
+        };
+
+
+        $this->assertNull($schema->resolve('dummy', $data));
+        $this->assertEquals(1, $schema->resolve('field', $data));
+    }
+
     public function testSerialization()
     {
         $expected = [

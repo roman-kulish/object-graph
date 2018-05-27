@@ -71,4 +71,28 @@ class GraphNodeTest extends TestCase
 
         unset($graphNode['boom']);
     }
+
+    public function testSerialization()
+    {
+        $expected = [
+            'test1' => 1,
+            'test2' => 'dummy',
+            'test3' => false,
+        ];
+
+        $resolver  = new Resolver();
+        $graphNode = $resolver->resolveObject((object)$expected);
+
+        $serialized = serialize($graphNode);
+
+        /** @var GraphNode $graphNode */
+        $graphNode = unserialize($serialized);
+
+        $this->assertInstanceOf(GraphNode::class, $graphNode);
+        $this->assertEquals(array_keys($expected), array_keys($graphNode->asArray()));
+
+        foreach ($expected as $key => $value) {
+            $this->assertSame($value, $graphNode->$key);
+        }
+    }
 }
