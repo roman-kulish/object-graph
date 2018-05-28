@@ -73,7 +73,7 @@ class Schema
      *
      * @return Schema
      */
-    public function withContext(Context $context): self
+    final public function withContext(Context $context): self
     {
         $schema          = clone $this;
         $schema->context = $context;
@@ -113,7 +113,7 @@ class Schema
      *
      * @return array
      */
-    public function getFields(): array
+    final public function getFields(): array
     {
         return array_keys($this->fields);
     }
